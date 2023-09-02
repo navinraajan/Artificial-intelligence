@@ -11,3 +11,5 @@ can_fly(Bird) :-
 % Rule to determine if a bird cannot fly
 cannot_fly(Bird) :-
     bird(Bird, cannot_fly).
+
+%query:can_fly(pigeon)
