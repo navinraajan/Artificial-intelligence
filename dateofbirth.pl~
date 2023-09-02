@@ -3,4 +3,4 @@ dob(john,'23-01-2003').
 dob(malik,'15-05-1995').
 date_of_birth(Name,DOB):-
     dob(Name,DOB).
-
+%query:date_of_birth(navin,DOB).
