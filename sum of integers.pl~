@@ -8,3 +8,5 @@ sum_integers(N, Sum) :-
     N1 is N - 1,
     sum_integers(N1, Sum1ToN),
     Sum is N + Sum1ToN.
+
+%query:sum_integers:(5,Sum).
