@@ -1,0 +1,39 @@
+% Facts representing students, teachers, subjects, and their codes
+student(john, 'S001').
+student(susan, 'S002').
+student(ryan, 'S003').
+student(linda, 'S004').
+
+teacher(mr_smith, 'T001').
+teacher(ms_jones, 'T002').
+teacher(mr_davis, 'T003').
+teacher(mrs_lee, 'T004').
+
+subject(math, 'M001').
+subject(science, 'S001').
+subject(history, 'H001').
+subject(english, 'E001').
+
+% Relationships between students, teachers, and subjects
+teaches(mr_smith, math).
+teaches(ms_jones, science).
+teaches(mr_davis, history).
+teaches(mrs_lee, english).
+
+enrolled(john, math).
+enrolled(john, history).
+enrolled(susan, science).
+enrolled(ryan, english).
+enrolled(linda, math).
+enrolled(linda, science).
+
+% Query to find the teacher of a subject for a student
+teacher_for_subject(Student, Subject, Teacher) :-
+
+    enrolled(Student, Subject),
+    teaches(Teacher, Subject).
+
+% Query to find the subjects a student is enrolled in
+subjects_enrolled(Student, Subjects) :-
+
+    findall(Subject, enrolled(Student, Subject), Subjects).

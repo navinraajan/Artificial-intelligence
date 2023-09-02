@@ -1,0 +1,32 @@
+% Define symptoms and diseases
+symptom(fever).
+symptom(cough).
+symptom(headache).
+symptom(sore_throat).
+symptom(chest_pain).
+
+disease(flu, [fever, cough, headache]).
+disease(cold, [cough, sore_throat]).
+disease(influenza, [fever, cough, sore_throat]).
+disease(angina, [chest_pain]).
+
+% Define rules for diagnosis
+diagnose(Disease) :-
+    symptom(Symptom),
+    not(has(Symptom)),
+    disease(Disease, Symptoms),
+    subset(Symptoms, SymptomsPresent),
+    length(SymptomsPresent, SymptomCount),
+    length(Symptoms, TotalSymptoms),
+    SymptomCount >= TotalSymptoms / 2.
+
+% Define a predicate for checking if a list is a subset of another list
+subset([], _).
+subset([H|T], List) :-
+    member(H, List),
+    subset(T, List).
+
+% Define facts to indicate the presence of symptoms
+has(fever).
+has(cough).
+

@@ -1,0 +1,79 @@
+% Define the initial state
+at(monkey, on_floor).
+at(box, on_floor).
+at(banana, ceiling).
+has_not(grabbed).
+
+% Define the actions that can be taken
+% Monkey can climb the box.
+action(climb) :-
+    at(monkey, on_floor),
+    at(box, on_floor),
+    has_not(grabbed).
+
+% Monkey can push the box to the banana's position.
+action(push) :-
+    at(monkey, on_floor),
+    at(box, on_floor),
+    at(banana, ceiling),
+    has_not(grabbed).
+
+% Monkey can grab the banana when on the box.
+action(grab) :-
+    at(monkey, on_box),
+    at(banana, ceiling),
+    has_not(grabbed).
+
+% Define state transitions for the actions
+result(climb, S, S1) :-
+    at(monkey, on_floor, S),
+    at(box, on_floor, S),
+    has_not(grabbed, S),
+    at(monkey, on_box, S1).
+
+result(push, S, S1) :-
+    at(monkey, on_floor, S),
+    at(box, on_floor, S),
+    at(banana, ceiling, S),
+    has_not(grabbed, S),
+    at(monkey, on_floor, S1),
+    at(box, at_banana, S1).
+
+result(grab, S, S1) :-
+    at(monkey, on_box, S),
+    at(banana, ceiling, S),
+    has_not(grabbed, S),
+    has(grabbed, S),
+    at(monkey, has_banana, S1).
+
+% Define a goal state
+goal_state(S) :-
+    has(grabbed, S).
+
+% Helper predicates to check state
+at(monkey, on_floor, S) :- at(monkey, on_floor, S), \+ has_banana(S).
+at(monkey, on_box, S) :- at(monkey, on_box, S), \+ has_banana(S).
+at(box, on_floor, S) :- at(box, on_floor, S).
+at(box, at_banana, S) :- at(box, at_banana, S).
+at(banana, ceiling, S) :- at(banana, ceiling, S).
+has(grabbed, S) :- has(grabbed, S).
+has_not(grabbed, S) :- \+ has(grabbed, S).
+has_banana(S) :- at(monkey, has_banana, S).
+
+% Plan for reaching the goal state
+plan(S, Plan) :-
+    goal_state(S),
+    Plan = [].
+plan(S, Plan) :-
+    select_action(S, Action),
+    result(Action, S, S1),
+    plan(S1, RestOfPlan),
+    Plan = [Action | RestOfPlan].
+
+select_action(S, Action) :-
+    action(Action),
+    result(Action, S, _).
+
+% Example query to solve the Monkey and Banana problem
+% ?- plan(at(monkey, on_floor, at(box, on_floor, at(banana, ceiling,
+ %has_not(grabbed)))), Plan).

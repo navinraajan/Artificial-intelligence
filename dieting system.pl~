@@ -1,0 +1,29 @@
+% Define dietary recommendations for diseases
+diet_recommendation(diabetes, [avoid(sugar), limit(carbohydrates), eat(vegetables), eat(lean_protein)]).
+diet_recommendation(hypertension, [limit(sodium), eat(fruits), eat(whole_grains), limit(red_meat)]).
+
+% Define food items and their nutritional information
+food_item(apple, [low_calories, no_sugar, high_fiber]).
+food_item(potato, [high_carbohydrates, low_fat]).
+food_item(chicken, [lean_protein, low_sodium]).
+food_item(beef, [high_protein, high_sodium]).
+
+% Define rules to suggest a diet plan based on a disease
+suggest_diet(Disease, Diet) :-
+    diet_recommendation(Disease, Recommendations),
+    generate_diet(Recommendations, Diet).
+
+generate_diet([], []).
+generate_diet([avoid(Food)|Rest], Diet) :-
+    food_item(Food, Info),
+    not(member(avoided, Info)),
+    generate_diet(Rest, Diet).
+generate_diet([limit(Food)|Rest], [Food|Diet]) :-
+    food_item(Food, Info),
+    not(member(limit, Info)),
+    generate_diet(Rest, Diet).
+generate_diet([eat(Food)|Rest], [Food|Diet]) :-
+    food_item(Food, _),
+    generate_diet(Rest, Diet).
+
+%query:suggest_diet(diabetes, Diet).

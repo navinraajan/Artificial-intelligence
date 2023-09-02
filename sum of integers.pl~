@@ -1,0 +1,10 @@
+% Base case: The sum of integers from 1 to 1 is 1.
+sum_integers(1, 1).
+
+% Recursive case: The sum of integers from 1 to n is N + Sum1ToN,
+% where Sum1ToN is the sum of integers from 1 to n-1.
+sum_integers(N, Sum) :-
+    N > 1,
+    N1 is N - 1,
+    sum_integers(N1, Sum1ToN),
+    Sum is N + Sum1ToN.

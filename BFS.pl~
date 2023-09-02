@@ -1,0 +1,79 @@
+
+
+% Define a simple state space problem
+% State representation: state(Node, Cost)
+% Actions: move(Node, Neighbor, Cost)
+% Goal: reach(goalNode)
+
+% Define the initial state
+initial_state(state(startNode, 0)).
+
+% Define the goal state
+goal_state(state(goalNode, _)).
+
+% Define possible actions and their costs
+move(startNode, a, 2).
+move(startNode, b, 1).
+move(a, goalNode, 3).
+move(b, goalNode, 2).
+
+% Define a heuristic function (estimate of the remaining cost to the goal)
+heuristic(state(Node, _), H) :-
+    goal_state(state(goalNode, _)),
+    cost_estimate(Node, goalNode, H).
+
+% Define a predicate to calculate the cost estimate
+cost_estimate(Node, goalNode, Cost) :-
+    % In this simple example, we assume a constant cost estimate.
+    % You can replace this with a more complex heuristic if needed.
+    Cost is 1.
+
+% Define the Best First Search algorithm
+best_first_search(Start, Path) :-
+    expand([Start], [], Path).
+
+% Base case: If the current state is the goal state, we're done.
+expand([State | Path], _, [State | Path]) :-
+    goal_state(State).
+
+% Recursive case: Expand the current state, sort successor states by heuristic, and continue the search.
+expand([CurrentState | Path], Visited, ResultPath) :-
+    findall(Successor, successor(CurrentState, Successor, Visited), Successors),
+    sort_successors(Successors, SortedSuccessors),
+    append(SortedSuccessors, Path, NewPath),
+    expand(NewPath, [CurrentState | Visited], ResultPath).
+
+% Define successor predicate
+successor(State, Successor, Visited) :-
+    move(State, Node, Cost),  % Use Node here
+    not(member(state(Node, _), Visited)),
+    Successor = state(Node, Cost).
+
+% Define sorting function for successors based on heuristic
+sort_successors(Successors, SortedSuccessors) :-
+    predsort(compare_heuristic, Successors, SortedSuccessors).
+
+% Define comparison function for sorting based on heuristic values
+compare_heuristic(Order, state(_, Cost1), state(_, Cost2)) :-
+    heuristic_cost(Cost1, H1),
+    heuristic_cost(Cost2, H2),
+    compare(Order, H1, H2).
+
+% Define a heuristic cost function (you can replace it with a more complex heuristic if needed)
+heuristic_cost(Cost, Heuristic) :-
+    Heuristic is Cost.
+
+
+% Example usage
+:- initialization(main).
+main :-
+    initial_state(InitialState),
+    best_first_search(InitialState, Path),
+    writeln('Solution path:'),
+    print_path(Path),
+    halt.
+
+print_path([]).
+print_path([state(Node, Cost) | Rest]) :-
+    write(Node), write(' (Cost: '), write(Cost), writeln(')'),
+    print_path(Rest).

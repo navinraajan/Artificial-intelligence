@@ -1,0 +1,17 @@
+% Define the predicate hanoi/3
+hanoi(1, A, _, C) :-
+    write('Move disk from '), write(A), write(' to '), writeln(C).
+
+hanoi(N, A, B, C) :-
+    N > 1,
+    M is N - 1,
+    hanoi(M, A, C, B),
+    hanoi(1, A, _, C),
+    hanoi(M, B, A, C).
+
+% Define a predicate to solve the Towers of Hanoi with N disks
+towers_of_hanoi(N) :-
+    hanoi(N, 'A', 'B', 'C').
+
+% Example usage: solve the Towers of Hanoi with 3 disks
+%?- towers_of_hanoi(3).
