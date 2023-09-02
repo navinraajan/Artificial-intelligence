@@ -1,0 +1,13 @@
+% Facts describing birds and their flying capability
+bird(pigeon, can_fly).
+bird(sparrow, can_fly).
+bird(penguin, cannot_fly).
+bird(ostrich, cannot_fly).
+
+% Rule to determine if a bird can fly
+can_fly(Bird) :-
+    bird(Bird, can_fly).
+
+% Rule to determine if a bird cannot fly
+cannot_fly(Bird) :-
+    bird(Bird, cannot_fly).
