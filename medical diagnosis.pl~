@@ -30,3 +30,4 @@ subset([H|T], List) :-
 has(fever).
 has(cough).
 
+%query:diagnose(Disease).
