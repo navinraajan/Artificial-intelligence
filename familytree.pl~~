@@ -28,3 +28,5 @@ female(alice).
 female(carol).
 female(emma).
 female(grace).
+
+%query:male(carol).
