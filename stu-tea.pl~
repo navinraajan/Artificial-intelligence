@@ -37,3 +37,5 @@ teacher_for_subject(Student, Subject, Teacher) :-
 subjects_enrolled(Student, Subjects) :-
 
     findall(Subject, enrolled(Student, Subject), Subjects).
+
+%query: enrolled(john, Subject)
