@@ -16,3 +16,4 @@ find_color(Fruit, Color) :-
 % Query to find all fruits of a specific color
 find_fruits_of_color(Color, Fruits) :-
     findall(Fruit, fruit_color(Fruit, Color), Fruits).
+%query:find_color(apple,Color).
