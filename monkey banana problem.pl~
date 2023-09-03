@@ -74,6 +74,4 @@ select_action(S, Action) :-
     action(Action),
     result(Action, S, _).
 
-% Example query to solve the Monkey and Banana problem
-% ?- plan(at(monkey, on_floor, at(box, on_floor, at(banana, ceiling,
- %has_not(grabbed)))), Plan).
+%?- initial_state(InitialState), plan(InitialState, Plan).
