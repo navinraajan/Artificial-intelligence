@@ -63,17 +63,5 @@ compare_heuristic(Order, state(_, Cost1), state(_, Cost2)) :-
 heuristic_cost(Cost, Heuristic) :-
     Heuristic is Cost.
 
+%?- best_first_search(initial_state(X), Path).
 
-% Example usage
-:- initialization(main).
-main :-
-    initial_state(InitialState),
-    best_first_search(InitialState, Path),
-    writeln('Solution path:'),
-    print_path(Path),
-    halt.
-
-print_path([]).
-print_path([state(Node, Cost) | Rest]) :-
-    write(Node), write(' (Cost: '), write(Cost), writeln(')'),
-    print_path(Rest).
